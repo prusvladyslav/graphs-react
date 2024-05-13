@@ -34,7 +34,7 @@ const FormSchema = z.object({
 });
 
 type Props = {
-  setGraphData: Dispatch<SetStateAction<GraphData | undefined>>;
+  setGraphData: Dispatch<SetStateAction<GraphData | null>>;
   isUpdate: boolean;
 };
 
