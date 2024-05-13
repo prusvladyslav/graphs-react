@@ -21,7 +21,7 @@ const validateNumber = z.preprocess((value) => {
     }
   }
   return value;
-}, z.number().int("Число має бути цілим").min(1, "Число має бути не меншим за 1"));
+}, z.number({message: 'Неправильний формат'}).int("Число має бути цілим").min(1, "Число має бути не меншим за 1"));
 
 const FormSchema = z.object({
   nC: validateNumber,
@@ -60,7 +60,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field}  />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,7 +77,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field}  />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,7 +94,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field}  />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
