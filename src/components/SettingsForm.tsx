@@ -12,6 +12,9 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Dispatch, SetStateAction } from "react";
+import { GraphData } from "@/App";
+import { cn } from "@/lib/utils";
 
 const validateNumber = z.preprocess((value) => {
   if (typeof value === "string") {
@@ -21,7 +24,7 @@ const validateNumber = z.preprocess((value) => {
     }
   }
   return value;
-}, z.number({message: 'Неправильний формат'}).int("Число має бути цілим").min(1, "Число має бути не меншим за 1"));
+}, z.number({ message: "Неправильний формат" }).int("Число має бути цілим").min(1, "Число має бути не меншим за 1"));
 
 const FormSchema = z.object({
   nC: validateNumber,
@@ -30,7 +33,12 @@ const FormSchema = z.object({
   nR: validateNumber,
 });
 
-export default function SettingsForm() {
+type Props = {
+  setGraphData: Dispatch<SetStateAction<GraphData | undefined>>;
+  isUpdate: boolean;
+};
+
+export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -42,8 +50,10 @@ export default function SettingsForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    setGraphData(data);
   }
+
+  const { isValid } = form.formState;
 
   return (
     <div className="mx-auto max-w-xl p-6 space-y-6">
@@ -60,7 +70,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field}  />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,7 +87,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field}  />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,7 +104,7 @@ export default function SettingsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input {...field}  />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,10 +129,16 @@ export default function SettingsForm() {
             />
           </div>
           <div className="flex justify-end">
-            <Button type="submit">Побудувати граф</Button>
+            <Button
+              disabled={!isValid}
+              className={cn({ "bg-slate-700": !isValid })}
+              type="submit"
+            >
+              {isUpdate ? "Перебудувати граф" : "Побудувати граф"}
+            </Button>
           </div>
         </form>
       </Form>
     </div>
   );
-}
+};
