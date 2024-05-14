@@ -7,15 +7,9 @@ import {
   useState,
 } from "react";
 import cytoscape from "cytoscape";
-import { EdgeData, GraphData } from "@/App";
-import { EdgeDialog } from "./EdgeDialog";
+import { EdgeData, GraphData, NodeData } from "@/App";
+import { EdgeDialog, NodeDialog } from "./dialogs";
 import { buildGraph } from "@/lib/utils";
-
-type Props = {
-  graphData: GraphData;
-  setEdgeData: Dispatch<SetStateAction<EdgeData>>;
-  edgeData: EdgeData;
-};
 
 const edgeDefaultValue = {
   c: "f**2+11*f",
@@ -24,36 +18,76 @@ const edgeDefaultValue = {
   alpha: 1,
 };
 
+const nodeDefaultValue = {
+  "lambda+": "0",
+  "lambda-": "100",
+  P_min: "0",
+  P_max: "5",
+};
+
 type EdgeObject = {
   [key: string]: typeof edgeDefaultValue;
+};
+
+type NodeObject = {
+  [key: string]: typeof nodeDefaultValue;
+};
+
+type Props = {
+  graphData: GraphData;
+  setEdgeData: Dispatch<SetStateAction<EdgeData>>;
+  edgeData: EdgeData;
+  nodeData: NodeData;
+  setNodeData: Dispatch<SetStateAction<NodeData>>;
 };
 
 export const Graph: React.FC<Props> = ({
   graphData,
   setEdgeData,
   edgeData,
+  nodeData,
+  setNodeData,
 }) => {
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
+
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
   const cyRef = useRef(null);
 
   const graph = useMemo(() => buildGraph(graphData), [graphData]);
 
-  const edges: EdgeObject = graph.reduce((acc: EdgeObject, item) => {
-    if (item.data.id.includes("edge")) {
-      acc[item.data.id.split("edge-")[1]] = edgeDefaultValue;
-    }
-    return acc;
-  }, {});
+  const edges: EdgeObject = useMemo(
+    () =>
+      graph.reduce((acc: EdgeObject, item) => {
+        if (item.data.id.includes("edge")) {
+          acc[item.data.id.split("edge-")[1]] = edgeDefaultValue;
+        }
+        return acc;
+      }, {}),
+    [graph]
+  );
+
+  const nodes: NodeObject = useMemo(
+    () =>
+      graph.reduce((acc: NodeObject, item) => {
+        if (item.data.id.includes("R") && !item.data.id.includes("edge")) {
+          acc[item.data.id] = nodeDefaultValue;
+        }
+        return acc;
+      }, {}),
+    [graph]
+  );
 
   useEffect(() => {
     setEdgeData(edges);
+
+    setNodeData(nodes);
 
     const cy = cytoscape({
       container: cyRef.current,
       layout: {
         name: "preset",
       },
-
       style: [
         {
           selector: "node",
@@ -82,13 +116,19 @@ export const Graph: React.FC<Props> = ({
           },
         },
       ],
-
       elements: graph,
     });
 
     cy.on("tap", "edge", function (evt) {
       const edge = evt.target;
       setSelectedEdge(edge.id().split("edge-")[1]);
+    });
+
+    cy.on("tap", "node", function (evt) {
+      const node = evt.target;
+      if (node.id().startsWith("R")) {
+        setSelectedNode(node.id());
+      }
     });
 
     return () => {
@@ -105,6 +145,14 @@ export const Graph: React.FC<Props> = ({
           onClose={() => setSelectedEdge(null)}
           setEdgeData={setEdgeData}
           defaultValue={edgeData[selectedEdge]}
+        />
+      )}
+      {!!selectedNode && (
+        <NodeDialog
+          selectedNode={selectedNode}
+          onClose={() => setSelectedNode(null)}
+          setNodeData={setNodeData}
+          defaultValue={nodeData[selectedNode]}
         />
       )}
     </div>

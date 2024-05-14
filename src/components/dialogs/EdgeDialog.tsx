@@ -97,7 +97,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="c">Function ẑ</Label>
+              <Label htmlFor="z">Function ẑ</Label>
               <FormField
                 control={form.control}
                 name="z"
@@ -112,7 +112,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="c">Function r̂</Label>
+              <Label htmlFor="r">Function r̂</Label>
               <FormField
                 control={form.control}
                 name="r"
