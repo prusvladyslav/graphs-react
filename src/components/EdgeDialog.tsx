@@ -25,6 +25,7 @@ type Props = {
   selectedEdge: string;
   onClose: VoidFunction;
   setEdgeData: Dispatch<SetStateAction<EdgeData>>;
+  defaultValue: EdgeData["string"];
 };
 
 const FormSchema = z.object({
@@ -46,16 +47,12 @@ export const EdgeDialog: React.FC<Props> = ({
   selectedEdge,
   onClose,
   setEdgeData,
+  defaultValue,
 }) => {
-  const edgeId = selectedEdge.split("edge-")[1];
+  const edgeId = selectedEdge;
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      c: "f**2+11*f",
-      z: "0",
-      r: "0",
-      alpha: 1,
-    },
+    defaultValues: defaultValue,
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -130,7 +127,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="alpha">Alpha</Label>
+              <Label htmlFor="alpha">Function α</Label>
               <FormField
                 control={form.control}
                 name="alpha"

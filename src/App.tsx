@@ -23,7 +23,7 @@ function App() {
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
       <SettingsForm setGraphData={setGraphData} isUpdate={!!graphData} />
-      {graphData && <Graph graphData={graphData} setEdgeData={setEdgeData} />}
+      {graphData && <Graph graphData={graphData} setEdgeData={setEdgeData} edgeData={edgeData} />}
     </main>
   );
 }

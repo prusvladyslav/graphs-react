@@ -1,4 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import cytoscape from "cytoscape";
 import { EdgeData, GraphData } from "@/App";
 import { EdgeDialog } from "./EdgeDialog";
@@ -7,13 +14,40 @@ import { buildGraph } from "@/lib/utils";
 type Props = {
   graphData: GraphData;
   setEdgeData: Dispatch<SetStateAction<EdgeData>>;
+  edgeData: EdgeData;
 };
 
-export const Graph: React.FC<Props> = ({ graphData, setEdgeData }) => {
+const edgeDefaultValue = {
+  c: "f**2+11*f",
+  z: "0",
+  r: "0",
+  alpha: 1,
+};
+
+type EdgeObject = {
+  [key: string]: typeof edgeDefaultValue;
+};
+
+export const Graph: React.FC<Props> = ({
+  graphData,
+  setEdgeData,
+  edgeData,
+}) => {
   const [selectedEdge, setSelectedEdge] = useState<string | null>(null);
   const cyRef = useRef(null);
 
+  const graph = useMemo(() => buildGraph(graphData), [graphData]);
+
+  const edges: EdgeObject = graph.reduce((acc: EdgeObject, item) => {
+    if (item.data.id.includes("edge")) {
+      acc[item.data.id.split("edge-")[1]] = edgeDefaultValue;
+    }
+    return acc;
+  }, {});
+
   useEffect(() => {
+    setEdgeData(edges);
+
     const cy = cytoscape({
       container: cyRef.current,
       layout: {
@@ -49,18 +83,18 @@ export const Graph: React.FC<Props> = ({ graphData, setEdgeData }) => {
         },
       ],
 
-      elements: buildGraph(graphData),
+      elements: graph,
     });
 
     cy.on("tap", "edge", function (evt) {
       const edge = evt.target;
-      setSelectedEdge(edge.id());
+      setSelectedEdge(edge.id().split("edge-")[1]);
     });
 
     return () => {
       cy.destroy();
     };
-  }, [graphData]);
+  }, [graph]);
 
   return (
     <div className="flex justify-center">
@@ -70,6 +104,7 @@ export const Graph: React.FC<Props> = ({ graphData, setEdgeData }) => {
           selectedEdge={selectedEdge}
           onClose={() => setSelectedEdge(null)}
           setEdgeData={setEdgeData}
+          defaultValue={edgeData[selectedEdge]}
         />
       )}
     </div>
