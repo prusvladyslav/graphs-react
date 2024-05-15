@@ -1,6 +1,6 @@
 import { SettingsForm } from "./components/SettingsForm";
 import { Graph } from "./components/Graph";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SolutionForm } from "./components/SolutionForm";
 import Solver from "../src/lib/solver";
 import { Label } from "./components/ui/label";
