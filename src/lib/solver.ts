@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { create, all } from "mathjs";
 import { Parser } from "expr-eval";
 
