@@ -32,15 +32,7 @@ const FormSchema = z.object({
   c: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
   z: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
   r: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  alpha: z.preprocess((value) => {
-    if (typeof value === "string") {
-      const parsed = Number(value);
-      if (!isNaN(parsed) && isFinite(parsed)) {
-        return parsed;
-      }
-    }
-    return value;
-  }, z.number({ message: "Неправильний формат" }).min(0, "Число має бути не меншим за 0").max(1, "Число має бути не більшим за 1")),
+  alpha: z.string().regex(/^(0\.(?!0+$)\d+)$/, "Неправильний формат"),
 });
 
 export const EdgeDialog: React.FC<Props> = ({

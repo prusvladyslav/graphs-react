@@ -11,13 +11,7 @@ import { EdgeData, GraphData, NodeData } from "@/App";
 import { EdgeDialog, NodeDialog } from "./dialogs";
 import { buildGraph } from "@/lib/utils";
 
-const edgeDefaultValue = {
-  c: "f**2+11*f",
-  z: "0",
-  r: "0",
-  alpha: 1,
-};
-
+const edgeDefaultValue = { alpha: "0.8", c: "f^2", z: "f^3", r: "log(f+1)" };
 const nodeDefaultValue = {
   "lambda+": "0",
   "lambda-": "100",

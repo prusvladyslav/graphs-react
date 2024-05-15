@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,27 +13,39 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Dispatch, SetStateAction } from "react";
-import { GraphData } from "@/App";
+import { SolutionData } from "@/App";
 import { cn } from "@/lib/utils";
+import { methodOptions } from "@/const";
 
 const validateNumber = z.preprocess((value) => {
-  if (typeof value === "string" && value !== '') {
+  if (typeof value === "string" && value !== "") {
     const parsed = Number(value);
     if (!isNaN(parsed) && isFinite(parsed)) {
       return parsed;
     }
   }
   return value;
-}, z.number({ message: "Неправильний формат" }).int("Число має бути цілим").min(1, "Число має бути не меншим за 1"));
+}, z.number({ message: "Неправильний формат" }));
 
 const FormSchema = z.object({
-  nC: validateNumber,
-  nB: validateNumber,
-  nD: validateNumber,
-  nR: validateNumber,
-  theta: z.preprocess((value) => {
-    if (typeof value === "string" && value !== '') {
+  solutionMethod: z.string(),
+  c_min: validateNumber,
+  c_max: validateNumber,
+  lambda: z.preprocess((value) => {
+    if (typeof value === "string" && value !== "") {
       const parsed = Number(value);
+      if (!isNaN(parsed) && isFinite(parsed)) {
+        return parsed;
+      }
+    }
+    return value;
+  }, z.number({ message: "Неправильний формат" }).min(0, "Число має бути не меншим за 0").max(1, "Число має бути не більшим за 1")),
+  epsilon: z.preprocess((value) => {
+    if (typeof value === "string" && value !== "") {
+      console.log(value);
+
+      const parsed = Number(value);
+
       if (!isNaN(parsed) && isFinite(parsed)) {
         return parsed;
       }
@@ -42,41 +54,71 @@ const FormSchema = z.object({
   }, z.number({ message: "Неправильний формат" }).min(0, "Число має бути не меншим за 0").max(1, "Число має бути не більшим за 1")),
 });
 
+
+
 type Props = {
-  setGraphData: Dispatch<SetStateAction<GraphData | null>>;
-  isUpdate: boolean;
+  setSolutionData: Dispatch<SetStateAction<SolutionData | null>>;
 };
 
-export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
+export const SolutionForm: React.FC<Props> = ({ setSolutionData }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      nC: 1,
-      nB: 1,
-      nD: 1,
-      nR: 1,
-      theta: 1,
+      c_min: 0,
+      c_max: 10,
+      lambda: 0.001,
+      epsilon: 0.00001,
+      solutionMethod: "korpelevich",
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    setGraphData(data);
+    setSolutionData(data);
   }
 
   const { isValid } = form.formState;
 
   return (
     <div className="mx-auto max-w-xl p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Параметри Графа</h1>
+      <h1 className="text-2xl font-bold">Вирішення</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="nC">
-              Кількість пунктів добування (n<sub>C</sub>)
+            <Label htmlFor="solutionMethod">Метод</Label>
+            <FormField
+              control={form.control}
+              name="solutionMethod"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="relative w-max">
+                    <FormControl>
+                      <select
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "w-[256px] appearance-none font-normal"
+                        )}
+                        {...field}
+                      >
+                        {methodOptions.map(({ value, label }) => (
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="c_min">
+              C<sub>min</sub>
             </Label>
             <FormField
               control={form.control}
-              name="nC"
+              name="c_min"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -88,12 +130,12 @@ export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="nC">
-              Кількість нафтових центрів (n<sub>B</sub>)
+            <Label htmlFor="c_max">
+              C<sub>max</sub>
             </Label>
             <FormField
               control={form.control}
-              name="nB"
+              name="c_max"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -105,12 +147,10 @@ export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="nD">
-              Кількість розподільчих центрів (n<sub>D</sub>)
-            </Label>
+            <Label htmlFor="lambda">Lambda</Label>
             <FormField
               control={form.control}
-              name="nD"
+              name="lambda"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -122,27 +162,10 @@ export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="nR">
-              Кількість точок попиту (n<sub>R</sub>)
-            </Label>
+            <Label htmlFor="epsilon">Epsilon</Label>
             <FormField
               control={form.control}
-              name="nR"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="theta">Theta (θ)</Label>
-            <FormField
-              control={form.control}
-              name="theta"
+              name="epsilon"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -159,7 +182,7 @@ export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
               className={cn({ "bg-slate-700": !isValid })}
               type="submit"
             >
-              {isUpdate ? "Перебудувати граф" : "Побудувати граф"}
+              Розв'язати
             </Button>
           </div>
         </form>
