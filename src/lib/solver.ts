@@ -7,12 +7,15 @@ const math = create(all);
 const parser = new Parser();
 
 export default class Solver {
-  constructor(nC, nS, nB, nD, nR, nP, theta, graphData, edges, nodes) {
+  constructor(graphData, edges, nodes) {
+    const { nC, nB, nD, nR, theta } = graphData;
+    // const nP = nB;
+    // const nS = nB;
     this.nC = nC;
-    this.nS = nS;
+    this.nS = nB;
     this.nB = nB;
     this.nD = nD;
-    this.nP = nP;
+    this.nP = nB;
     this.nR = nR;
 
     this.nodes = {};
@@ -370,45 +373,29 @@ export default class Solver {
   }
 }
 
-// let edges = {
-//   "1-C1": { c: "f^2+6*f", z: "0", r: "2*f^2", alpha: "1" },
-//   "C1-B1": { c: "2*f^2+7*f", z: "0", r: "0", alpha: "1" },
-//   "B1-P1": { c: "f^2+11*f", z: "0", r: "0", alpha: "1" },
-//   "P1-S1": { c: "3*f^2+11*f", z: "0", r: "0", alpha: "1" },
-//   "S1-D1": { c: "f^2+2*f", z: "0", r: "0", alpha: "1" },
-//   "D1-R1": { c: "f^2+f", z: "0", r: "0", alpha: "1" },
-// };
-// let nodes = {
-//   R1: { "lambda+": "0", "lambda-": "100", P_min: "0", P_max: "5" },
-// };
-// let theta = "1";
+// let edges = {'1-C1': {'c': 'f^2+6*f', 'z': '0', 'r': '2*f^2', 'alpha': '1'}, 'C1-B1': {'c': '2*f^2+7*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'B1-P1': {'c': 'f^2+11*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'P1-S1': {'c': '3*f^2+11*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'S1-D1': {'c': 'f^2+2*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'D1-R1': {'c': 'f^2+f', 'z': '0', 'r': '0', 'alpha': '1'}, '1-C2': {'c': 'f^2+6*f', 'z': '0', 'r': '2*f^2', 'alpha': '1'}, 'C1-B2': {'c': '2*f^2+7*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'C2-B1': {'c': '2*f^2+7*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'C2-B2': {'c': '2*f^2+7*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'B2-P2': {'c': 'f^2+11*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'P2-S2': {'c': '3*f^2+11*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'S1-D2': {'c': 'f^2+2*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'S2-D1': {'c': 'f^2+2*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'S2-D2': {'c': 'f^2+2*f', 'z': '0', 'r': '0', 'alpha': '1'}, 'D1-R2': {'c': 'f^2+f', 'z': '0', 'r': '0', 'alpha': '1'}, 'D2-R1': {'c': 'f^2+f', 'z': '0', 'r': '0', 'alpha': '1'}, 'D2-R2': {'c': 'f^2+f', 'z': '0', 'r': '0', 'alpha': '1'}}
+// let nodes = {'R1': {'lambda+': '0', 'lambda-': '100', 'P_min': '0', 'P_max': '5'}, 'R2': {'lambda+': '0', 'lambda-': '100', 'P_min': '0', 'P_max': '5'}}
+// let theta = '1'
 
-// let solver = new Solver(1, 1, 1, 1, 1, 1, edges, nodes, theta);
-// console.log(solver.edges); // Output: "f^2+6*f"
-// console.log(solver.allPaths()); // Output: "{'p0': ['1-C1', 'C1-B1', 'B1-P1', 'P1-S1', 'S1-D1', 'D1-R1']}"
-// console.log(solver.allPathsToRk(1)); // Output: "{'p0': ['1-C1', 'C1-B1', 'B1-P1', 'P1-S1', 'S1-D1', 'D1-R1']}"
-// console.log(solver.deltaAP("C1-B1", "p0")); // Output: "1"
-// console.log(solver.alphaAP("C1-B1", "p0")); // Output: "1"
-// console.log(solver.fA("C1-B1")); // Output: "x0"
-// console.log(solver.muP("p0"));
+// let solver = new Solver(2, 2, 2, 2, 2, 2, edges, nodes, theta);
+// console.log(solver.edges);  // Output: "f^2+6*f"
+// console.log(solver.allPaths());  // Output: "{'p0': ['1-C1', 'C1-B1', 'B1-P1', 'P1-S1', 'S1-D1', 'D1-R1']}"
+// console.log(solver.allPathsToRk(1));  // Output: "{'p0': ['1-C1', 'C1-B1', 'B1-P1', 'P1-S1', 'S1-D1', 'D1-R1']}"
+// console.log(solver.deltaAP('C1-B1', 'p0'));  // Output: "1"
+// console.log(solver.alphaAP('C1-B1', 'p0'));  // Output: "1"
+// console.log(solver.fA('C1-B1'));  // Output: "x0"
+// console.log(solver.muP('p0'));
 // let f = solver.F();
-// console.log(f(1, 1));
+// console.log(f(1,1))
 
-// let C = [0, 10]; // Constraints [lower bound, upper bound]
-// let initial_x = 0; // Initial value for all variables
-// let lambda_k = 0.001; // Step size
-// let epsilon = 0.0001; // Tolerance for convergence
-// let max_iter = 1000; // Maximum number of iterations
+// let C = [0, 10];  // Constraints [lower bound, upper bound]
+// let initial_x = 0;  // Initial value for all variables
+// let lambda_k = 0.001;  // Step size
+// let epsilon = 0.0001;  // Tolerance for convergence
+// let max_iter = 1000;  // Maximum number of iterations
 
 // // Run the optimization using the Korpelevich method
-// let res = solver.solve(
-//   "all",
-//   (C = C),
-//   0,
-//   (lambda_k = lambda_k),
-//   (epsilon = epsilon),
-//   (max_iter = max_iter)
-// );
+// let res = solver.solve('all', C=C, 0, lambda_k=lambda_k, epsilon=epsilon, max_iter=max_iter);
 
-// Log the results
-// console.log("Solution:", res);
+// // Log the results
+// console.log('Solution:', res);

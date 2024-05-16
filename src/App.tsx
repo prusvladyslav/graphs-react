@@ -7,6 +7,9 @@ import { SolutionForm } from "./components/SolutionForm";
 import Solver from "../src/lib/solver";
 import { Label } from "./components/ui/label";
 import { methodOptions } from "./const";
+import { DataTable } from "./components/Table/data-table";
+import { columns } from "./components/Table/columns";
+import { transformArray } from "./lib/utils";
 
 export type GraphData = {
   nC: number;
@@ -40,7 +43,7 @@ export type SolutionData = {
 };
 
 type Answer = {
-  solution: string;
+  solutions: string[];
   iterations: string;
   timeTaken: string;
   solutionMethod: string;
@@ -68,31 +71,28 @@ function App() {
         if (method === "all") {
           const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
           return Object.keys(res).map((key) => {
-            const [solution, iterations, timeTaken] = res[key];
+            const [solutions, iterations, timeTaken] = res[key];
             return {
-              solution: solution[0].toString(),
-              iterations: iterations.toString(),
-              timeTaken: timeTaken.toString(),
+              solutions: solutions,
+              iterations: iterations,
+              timeTaken: timeTaken,
               solutionMethod: key,
             };
           });
         }
-        const [solution, iterations, timeTaken] = await solver.solve(
-          method,
-          C,
-          initialX,
-          lambdaK,
-          epsilon
-        );
-        return { solution, iterations, timeTaken };
+        const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
+
+        const [solutions, iterations, timeTaken] = res;
+        return { solutions, iterations, timeTaken };
       } catch (error) {
         console.error("An error occurred:", error);
       }
     }
 
     if (graphData && edgeData && nodeData && solutionData) {
-      const solver = new Solver(1, 1, 1, 1, 1, 1, 1, 1, edgeData, nodeData);
+      const solver = new Solver(graphData, edgeData, nodeData);
       const solutionMethod = solutionData?.solutionMethod;
+
       if (solutionMethod === "all") {
         optimizeNetwork(solver, solutionMethod).then((res) => setAnswers(res));
         return;
@@ -104,6 +104,7 @@ function App() {
       );
     }
   }, [graphData, edgeData, nodeData, solutionData]);
+  // console.log();
 
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
@@ -118,35 +119,44 @@ function App() {
         />
       )}
       {graphData && <SolutionForm setSolutionData={setSolutionData} />}
-      {answers && (
+      {answers && answers.length === 1 ? (
         <div className="mx-auto max-w-xl p-6 space-y-6">
           <div className="space-y-10">
             {answers.map((answer) => (
               <div key={answer.solutionMethod} className="space-y-4">
                 <h1 className="text-2xl font-bold">
-                  Solution for{" "}
+                  Розвʼязок для{" "}
                   {
                     methodOptions.find(
                       (method) => method.value === answer.solutionMethod
                     )?.label
                   }
                 </h1>
+                {answer.solutions.map((solution, index) => (
+                  <div
+                    key={solution}
+                    className="grid grid-cols-2 items-center gap-4"
+                  >
+                    <Label htmlFor="solutionMethod">
+                      Розвʼязок {(index += 1)}.
+                    </Label>
+                    <span className="w-[256px]">{solution}</span>
+                  </div>
+                ))}
                 <div className="grid grid-cols-2 items-center gap-4">
-                  <Label htmlFor="solutionMethod">Optimized solution</Label>
-                  <span className="w-[256px]">{answer.solution}</span>
-                </div>
-                <div className="grid grid-cols-2 items-center gap-4">
-                  <Label htmlFor="solutionMethod">Time taken</Label>
+                  <Label htmlFor="solutionMethod">Витрачений час</Label>
                   <span className="w-[256px]">{answer.timeTaken}</span>
                 </div>
                 <div className="grid grid-cols-2 items-center gap-4">
-                  <Label htmlFor="solutionMethod">Iterations</Label>
+                  <Label htmlFor="solutionMethod">Ітерації</Label>
                   <span className="w-[256px]">{answer.iterations}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
+      ) : (
+        answers && <DataTable data={transformArray(answers)} columns={columns} />
       )}
     </main>
   );

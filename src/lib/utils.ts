@@ -1,9 +1,9 @@
 import { GraphData } from "@/App";
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 interface NodeData {
@@ -31,7 +31,6 @@ interface Position {
   x: number;
   y: number;
 }
-
 
 export function buildGraph(data: GraphData): Element[] {
   const { nC, nB, nD, nR } = data;
@@ -87,9 +86,13 @@ function addEdges(elements: Element[], levels: Record<string, string[]>): void {
   connectEveryToEvery(elements, levels["D"], levels["R"]);
 }
 
-function connectNodes(elements: Element[], sources: string[], targets: string[]): void {
-  sources.forEach(source => {
-    targets.forEach(target => {
+function connectNodes(
+  elements: Element[],
+  sources: string[],
+  targets: string[]
+): void {
+  sources.forEach((source) => {
+    targets.forEach((target) => {
       elements.push({
         data: {
           id: `edge-${source}-${target}`,
@@ -101,7 +104,12 @@ function connectNodes(elements: Element[], sources: string[], targets: string[])
   });
 }
 
-function connectPairwise(elements: Element[], sources: string[], midTargets: string[], finalTargets: string[]): void {
+function connectPairwise(
+  elements: Element[],
+  sources: string[],
+  midTargets: string[],
+  finalTargets: string[]
+): void {
   sources.forEach((source, index) => {
     const midTarget = midTargets[index];
     const finalTarget = finalTargets[index];
@@ -122,9 +130,13 @@ function connectPairwise(elements: Element[], sources: string[], midTargets: str
   });
 }
 
-function connectEveryToEvery(elements: Element[], sources: string[], targets: string[]): void {
-  sources.forEach(source => {
-    targets.forEach(target => {
+function connectEveryToEvery(
+  elements: Element[],
+  sources: string[],
+  targets: string[]
+): void {
+  sources.forEach((source) => {
+    targets.forEach((target) => {
       elements.push({
         data: {
           id: `edge-${source}-${target}`,
@@ -134,4 +146,44 @@ function connectEveryToEvery(elements: Element[], sources: string[], targets: st
       } as EdgeElement);
     });
   });
+}
+
+export function transformArray(
+  input: {
+    solutions: number[];
+    iterations: string;
+    timeTaken: string;
+    solutionMethod: string;
+  }[]
+) {
+  if (!input) return;
+
+  const result: Record<string, string | number>[] = [
+    { name: "Ітерації" },
+    { name: "Витрачений час" },
+  ];
+
+  // Create a map to store solution entries
+  const solutionEntries: Record<string, Record<string, string | number>> = {};
+
+  input.forEach((item) => {
+    const method = item.solutionMethod;
+
+    // Handle solutions array
+    item.solutions.forEach((solution, index) => {
+      const solutionName = `Рішення ${index + 1}`;
+      if (!solutionEntries[solutionName]) {
+        solutionEntries[solutionName] = { name: solutionName };
+      }
+      solutionEntries[solutionName][method] = solution;
+    });
+
+    // Handle iterations and timeTaken
+    result[0][method] = item.iterations;
+    result[1][method] = item.timeTaken;
+  });
+
+  // Convert solutionEntries map to an array and add to result
+  const solutionArray = Object.values(solutionEntries);
+  return [...solutionArray, ...result];
 }
