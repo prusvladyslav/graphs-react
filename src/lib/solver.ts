@@ -7,13 +7,12 @@ const math = create(all);
 const parser = new Parser();
 
 export default class Solver {
-  constructor(graphData, edges, nodes) {
-    const { nC, nB, nD, nR, theta } = graphData;
+  constructor(nC, nS, nB, nD, nR, nP, theta, graphData, edges, nodes) {
     this.nC = nC;
-    this.nS = nB;
+    this.nS = nS;
     this.nB = nB;
     this.nD = nD;
-    this.nP = nB;
+    this.nP = nP;
     this.nR = nR;
 
     this.nodes = {};

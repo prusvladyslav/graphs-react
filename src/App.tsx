@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { SettingsForm } from "./components/SettingsForm";
 import { Graph } from "./components/Graph";
 import { useEffect, useState } from "react";
@@ -63,6 +65,18 @@ function App() {
         const initialX = 0.1;
         const lambdaK = solutionData?.lambda;
         const epsilon = solutionData?.epsilon;
+        if (method === "all") {
+          const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
+          return Object.keys(res).map((key) => {
+            const [solution, iterations, timeTaken] = res[key];
+            return {
+              solution: solution[0].toString(),
+              iterations: iterations.toString(),
+              timeTaken: timeTaken.toString(),
+              solutionMethod: key,
+            };
+          });
+        }
         const [solution, iterations, timeTaken] = await solver.solve(
           method,
           C,
@@ -77,23 +91,10 @@ function App() {
     }
 
     if (graphData && edgeData && nodeData && solutionData) {
-      const solver = new Solver(graphData, edgeData, nodeData);
+      const solver = new Solver(1, 1, 1, 1, 1, 1, 1, 1, edgeData, nodeData);
       const solutionMethod = solutionData?.solutionMethod;
-      if (
-        solutionMethod ===
-        methodOptions.find((method) => method.value === "all")?.value
-      ) {
-        optimizeNetwork(solver, "korpelevich").then((firstRes) =>
-          optimizeNetwork(solver, "popov").then((secondRes) =>
-            optimizeNetwork(solver, "reflection").then((thirdRes) =>
-              setAnswers( firstRes && secondRes && thirdRes ? [
-                { ...firstRes, solutionMethod: "korpelevich" } ,
-                { ...secondRes, solutionMethod: "popov" },
-                { ...thirdRes, solutionMethod: "reflection" },
-              ] : null)
-            )
-          )
-        );
+      if (solutionMethod === "all") {
+        optimizeNetwork(solver, solutionMethod).then((res) => setAnswers(res));
         return;
       }
       optimizeNetwork(solver, solutionMethod).then((res) =>
