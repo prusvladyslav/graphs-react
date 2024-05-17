@@ -157,7 +157,7 @@ function App() {
                     );
                   })}
                   <div className="grid grid-cols-2 items-center gap-4">
-                    <Label htmlFor="solutionMethod">Витрачений час</Label>
+                    <Label htmlFor="solutionMethod">Витрачений час (ms)</Label>
                     <span className="w-[256px]">{answer.timeTaken}</span>
                   </div>
                   <div className="grid grid-cols-2 items-center gap-4">

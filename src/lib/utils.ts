@@ -160,7 +160,7 @@ export function transformArray(
 
   const result: Record<string, string | number>[] = [
     { name: "Кількість ітерацій" },
-    { name: "Витрачений час" },
+    { name: "Витрачений час (ms)" },
   ];
 
   // Create a map to store solution entries
