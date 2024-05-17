@@ -180,6 +180,9 @@ export const SolutionForm: React.FC<Props> = ({
             />
           </div>
           <div className="flex justify-end">
+            Натисніть на ребро графа або на вершину класу R, щоб задати параметри.
+          </div>
+          <div className="flex justify-end">
             <Button
               disabled={!isValid}
               className={cn({ "bg-slate-700": !isValid })}
