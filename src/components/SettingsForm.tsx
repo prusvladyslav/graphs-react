@@ -139,7 +139,7 @@ export const SettingsForm: React.FC<Props> = ({ setGraphData, isUpdate }) => {
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="theta">Theta (θ)</Label>
+            <Label htmlFor="theta">Вага ризику (θ)</Label>
             <FormField
               control={form.control}
               name="theta"
