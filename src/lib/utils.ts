@@ -159,7 +159,7 @@ export function transformArray(
   if (!input) return;
 
   const result: Record<string, string | number>[] = [
-    { name: "Ітерації" },
+    { name: "Кількість ітерацій" },
     { name: "Витрачений час" },
   ];
 

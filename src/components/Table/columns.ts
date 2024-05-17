@@ -14,11 +14,11 @@ export const columns: ColumnDef<Data>[] = [
   },
   {
     accessorKey: "korpelevich",
-    header: "Метод Корпелевича",
+    header: "Метод Корпелевич",
   },
   {
     accessorKey: "popov",
-    header: "Метод Попова",
+    header: "Метод екстраполяції з минулого",
   },
   {
     accessorKey: "reflection",

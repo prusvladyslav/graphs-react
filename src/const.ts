@@ -1,6 +1,6 @@
 export const methodOptions = [
-  { label: "Метод Корпелевича", value: "korpelevich" },
-  { label: "Метод Попова", value: "popov" },
+  { label: "Метод Корпелевич", value: "korpelevich" },
+  { label: "Метод екстраполяції з минулого", value: "popov" },
   {
     label: "Метод проектування з відбиттям",
     value: "reflection",
