@@ -119,7 +119,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="alpha">Відсоток втрат α</Label>
+              <Label htmlFor="alpha">Відсоток залишку після втрат α</Label>
               <FormField
                 control={form.control}
                 name="alpha"
