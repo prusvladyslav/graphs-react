@@ -82,117 +82,117 @@ export const SolutionForm: React.FC<Props> = ({
   const { isValid } = form.formState;
 
   return (
-    <div className="mx-auto max-w-xl p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Вирішення</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="solutionMethod">Метод</Label>
-            <FormField
-              control={form.control}
-              name="solutionMethod"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="relative w-max">
-                    <FormControl>
-                      <select
-                        className={cn(
-                          buttonVariants({ variant: "outline" }),
-                          "w-[256px] appearance-none font-normal"
-                        )}
-                        {...field}
-                      >
-                        {methodOptions.map(({ value, label }) => (
-                          <option key={value} value={value}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="c_min">
-              Межа C<sub>min</sub> функції проектування
-            </Label>
-            <FormField
-              control={form.control}
-              name="c_min"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="c_max">
-              Межа C<sub>max</sub> функції проектування
-            </Label>
-            <FormField
-              control={form.control}
-              name="c_max"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="lambda">Коефіцієнт λ</Label>
-            <FormField
-              control={form.control}
-              name="lambda"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="epsilon">Точність ε</Label>
-            <FormField
-              control={form.control}
-              name="epsilon"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex justify-end">
-            Натисніть на ребро графа або на вершину класу R, щоб задати параметри.
-          </div>
-          <div className="flex justify-end">
-            <Button
-              disabled={!isValid}
-              className={cn({ "bg-slate-700": !isValid })}
-              type="submit"
-            >
-              Розв'язати
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+      <div className="mx-auto max-w-xl p-6 space-y-6">
+        <div className="flex justify-end">
+          Натисніть на ребро графа або на вершину класу R, щоб задати параметри.
+        </div>
+        <h1 className="text-2xl font-bold">Розвʼязок</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="solutionMethod">Метод</Label>
+              <FormField
+                  control={form.control}
+                  name="solutionMethod"
+                  render={({field}) => (
+                      <FormItem>
+                        <div className="relative w-max">
+                          <FormControl>
+                            <select
+                                className={cn(
+                                    buttonVariants({variant: "outline"}),
+                                    "w-[256px] appearance-none font-normal"
+                                )}
+                                {...field}
+                            >
+                              {methodOptions.map(({value, label}) => (
+                                  <option key={value} value={value}>
+                                    {label}
+                                  </option>
+                              ))}
+                            </select>
+                          </FormControl>
+                        </div>
+                        <FormMessage/>
+                      </FormItem>
+                  )}
+              />
+            </div>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="c_min">
+                Межа C<sub>min</sub> функції проектування
+              </Label>
+              <FormField
+                  control={form.control}
+                  name="c_min"
+                  render={({field}) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                  )}
+              />
+            </div>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="c_max">
+                Межа C<sub>max</sub> функції проектування
+              </Label>
+              <FormField
+                  control={form.control}
+                  name="c_max"
+                  render={({field}) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                  )}
+              />
+            </div>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="lambda">Коефіцієнт λ</Label>
+              <FormField
+                  control={form.control}
+                  name="lambda"
+                  render={({field}) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                  )}
+              />
+            </div>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="epsilon">Точність ε</Label>
+              <FormField
+                  control={form.control}
+                  name="epsilon"
+                  render={({field}) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                  )}
+              />
+            </div>
+            <div className="flex justify-end">
+              <Button
+                  disabled={!isValid}
+                  className={cn({"bg-slate-700": !isValid})}
+                  type="submit"
+              >
+                Розв'язати
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
   );
 };
