@@ -74,7 +74,7 @@ export const EdgeDialog: React.FC<Props> = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="c">Function ĉ</Label>
+              <Label htmlFor="c">Функція операційних витрат ĉ(f)</Label>
               <FormField
                 control={form.control}
                 name="c"
@@ -89,7 +89,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="z">Function ẑ</Label>
+              <Label htmlFor="z">Функція відбраковочних витрат ẑ(f)</Label>
               <FormField
                 control={form.control}
                 name="z"
@@ -104,7 +104,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="r">Function r̂</Label>
+              <Label htmlFor="r">Функція ризику r̂(f)</Label>
               <FormField
                 control={form.control}
                 name="r"
@@ -119,7 +119,7 @@ export const EdgeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="alpha">Function α</Label>
+              <Label htmlFor="alpha">Відсоток втрат α</Label>
               <FormField
                 control={form.control}
                 name="alpha"
