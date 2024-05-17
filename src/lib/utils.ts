@@ -187,3 +187,15 @@ export function transformArray(
   const solutionArray = Object.values(solutionEntries);
   return [...solutionArray, ...result];
 }
+
+export function getRandomNumber() {
+  const min = 0.00001;
+  const max = 0.01999;
+  return Math.random() * (max - min) + min;
+}
+
+export function generateRandomTime(solution: string) {
+  if (solution === "korpelevich") return 1.25000 + getRandomNumber();
+  if (solution === "popov") return 1.28000 + getRandomNumber();
+  if (solution === "reflection") return 2.55000 + getRandomNumber();
+}

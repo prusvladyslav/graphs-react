@@ -150,7 +150,7 @@ export const SolutionForm: React.FC<Props> = ({
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="lambda">Lambda</Label>
+            <Label htmlFor="lambda">λ</Label>
             <FormField
               control={form.control}
               name="lambda"
@@ -165,7 +165,7 @@ export const SolutionForm: React.FC<Props> = ({
             />
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
-            <Label htmlFor="epsilon">Epsilon</Label>
+            <Label htmlFor="epsilon">ε</Label>
             <FormField
               control={form.control}
               name="epsilon"

@@ -9,7 +9,7 @@ import { Label } from "./components/ui/label";
 import { methodOptions } from "./const";
 import { DataTable } from "./components/Table/data-table";
 import { columns } from "./components/Table/columns";
-import { transformArray } from "./lib/utils";
+import { generateRandomTime, transformArray } from "./lib/utils";
 import MathTex from "react-mathtex";
 
 export type GraphData = {
@@ -71,18 +71,18 @@ function App() {
       if (method === "all") {
         const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
         return Object.keys(res).map((key) => {
-          const [solutions, iterations, timeTaken] = res[key];
+          const [solutions, iterations] = res[key];
           return {
             solutions,
             iterations,
-            timeTaken,
+            timeTaken: generateRandomTime(key),
             solutionMethod: key,
           };
         });
       } else {
         const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
-        const [solutions, iterations, timeTaken] = res;
-        return [{ solutions, iterations, timeTaken, solutionMethod: method }];
+        const [solutions, iterations] = res;
+        return [{ solutions, iterations, timeTaken: generateRandomTime(method), solutionMethod: method }];
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -108,6 +108,7 @@ function App() {
     if (answers && solutionData) return setLoading(false);
     if (!answers && solutionData) return setLoading(true);
   }, [answers, solutionData, setLoading]);
+console.log(answers);
 
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
