@@ -74,7 +74,7 @@ export const NodeDialog: React.FC<Props> = ({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="c">Lambda+</Label>
+              <Label htmlFor="c">Штраф за надлишок λ+</Label>
               <FormField
                 control={form.control}
                 name="lambda+"
@@ -89,7 +89,7 @@ export const NodeDialog: React.FC<Props> = ({
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="z">Lambda-</Label>
+              <Label htmlFor="z">Штраф за нестачу λ-</Label>
               <FormField
                 control={form.control}
                 name="lambda-"
@@ -105,7 +105,7 @@ export const NodeDialog: React.FC<Props> = ({
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
               <Label htmlFor="P_min">
-                P<sub>min</sub>
+                Межа рівномірного розподілу P<sub>min</sub>
               </Label>
               <FormField
                 control={form.control}
@@ -123,7 +123,7 @@ export const NodeDialog: React.FC<Props> = ({
             <div className="grid grid-cols-2 items-center gap-4">
               <Label htmlFor="P_max">
                 {" "}
-                P<sub>max</sub>
+                Межа рівномірного розподілу P<sub>max</sub>
               </Label>
               <FormField
                 control={form.control}
