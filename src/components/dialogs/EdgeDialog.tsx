@@ -68,7 +68,7 @@ export const EdgeDialog: React.FC<Props> = ({
       >
         <DialogHeader className="flex justify-between">
           <DialogTitle>
-            Enter functions for edge <span className="underline">{edgeId}</span>
+            Параметри Ребра <span className="underline">{edgeId}</span>
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>

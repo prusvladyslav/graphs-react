@@ -68,7 +68,7 @@ export const NodeDialog: React.FC<Props> = ({
       >
         <DialogHeader className="flex justify-between">
           <DialogTitle>
-            Enter functions for node <span className="underline">{nodeId}</span>
+            Параметри Вершини <span className="underline">{nodeId}</span>
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
