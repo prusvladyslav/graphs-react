@@ -10,8 +10,10 @@ import cytoscape from "cytoscape";
 import { EdgeData, GraphData, NodeData } from "@/App";
 import { EdgeDialog, NodeDialog } from "./dialogs";
 import { buildGraph } from "@/lib/utils";
+import { specialEdgeValues } from "@/const";
 
 const edgeDefaultValue = { alpha: "1", c: "f^2", z: "f^3", r: "log(f+1)" };
+
 const nodeDefaultValue = {
   "lambda+": "0",
   "lambda-": "100",
@@ -54,7 +56,29 @@ export const Graph: React.FC<Props> = ({
     () =>
       graph.reduce((acc: EdgeObject, item) => {
         if (item.data.id.includes("edge")) {
-          acc[item.data.id.split("edge-")[1]] = edgeDefaultValue;
+          const edgeId = item.data.id.split("edge-")[1];
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          const source = item.data.source;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          const target = item.data.target;
+
+          if (source === "1" && target.startsWith("C")) {
+            acc[edgeId] = specialEdgeValues["source1TargetC"];
+          } else if (source.startsWith("C") && target.startsWith("B")) {
+            acc[edgeId] = specialEdgeValues["sourceCTargetB"];
+          } else if (source.startsWith("B") && target.startsWith("P")) {
+            acc[edgeId] = specialEdgeValues["sourceBTargetP"];
+          } else if (source.startsWith("P") && target.startsWith("S")) {
+            acc[edgeId] = specialEdgeValues["sourcePTargetS"];
+          } else if (source.startsWith("S") && target.startsWith("D")) {
+            acc[edgeId] = specialEdgeValues["sourceSTargetD"];
+          } else if (source.startsWith("D") && target.startsWith("R")) {
+            acc[edgeId] = specialEdgeValues["sourceDTargetR"];
+          } else {
+            acc[edgeId] = edgeDefaultValue;
+          }
         }
         return acc;
       }, {}),

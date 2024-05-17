@@ -10,6 +10,7 @@ import { methodOptions } from "./const";
 import { DataTable } from "./components/Table/data-table";
 import { columns } from "./components/Table/columns";
 import { transformArray } from "./lib/utils";
+import MathTex from "react-mathtex";
 
 export type GraphData = {
   nC: number;
@@ -106,7 +107,7 @@ function App() {
   useEffect(() => {
     if (answers && solutionData) return setLoading(false);
     if (!answers && solutionData) return setLoading(true);
-  }, [answers, solutionData]);
+  }, [answers, solutionData, setLoading]);
 
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
@@ -130,37 +131,42 @@ function App() {
       {answers && answers.length === 1 ? (
         <div className="mx-auto max-w-xl p-6 space-y-6">
           <div className="space-y-10">
-            {answers.map((answer) => (
-              <div key={answer.solutionMethod} className="space-y-4">
-                <h1 className="text-2xl font-bold">
-                  Розвʼязок для{" "}
-                  {
-                    methodOptions.find(
-                      (method) => method.value === answer.solutionMethod
-                    )?.label
-                  }
-                </h1>
-                {answer.solutions.map((solution, index) => (
-                  <div
-                    key={solution}
-                    className="grid grid-cols-2 items-center gap-4"
-                  >
-                    <Label htmlFor="solutionMethod">
-                      Розвʼязок {(index += 1)}.
-                    </Label>
-                    <span className="w-[256px]">{solution}</span>
+            {answers.map((answer) => {
+              return (
+                <div key={answer.solutionMethod} className="space-y-4">
+                  <h1 className="text-2xl font-bold">
+                    Розвʼязок для{" "}
+                    {
+                      methodOptions.find(
+                        (method) => method.value === answer.solutionMethod
+                      )?.label
+                    }
+                  </h1>
+                  {answer.solutions.map((solution, index) => {
+                    const math = `<$>x^*_{p_{${index += 1}}}</$>`;
+                    return (
+                      <div
+                        key={solution}
+                        className="grid grid-cols-2 items-center gap-4"
+                      >
+                        <Label htmlFor="solutionMethod">
+                          <MathTex>{math}</MathTex>
+                        </Label>
+                        <span className="w-[256px]">{solution}</span>
+                      </div>
+                    );
+                  })}
+                  <div className="grid grid-cols-2 items-center gap-4">
+                    <Label htmlFor="solutionMethod">Витрачений час</Label>
+                    <span className="w-[256px]">{answer.timeTaken}</span>
                   </div>
-                ))}
-                <div className="grid grid-cols-2 items-center gap-4">
-                  <Label htmlFor="solutionMethod">Витрачений час</Label>
-                  <span className="w-[256px]">{answer.timeTaken}</span>
+                  <div className="grid grid-cols-2 items-center gap-4">
+                    <Label htmlFor="solutionMethod">Ітерації</Label>
+                    <span className="w-[256px]">{answer.iterations}</span>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 items-center gap-4">
-                  <Label htmlFor="solutionMethod">Ітерації</Label>
-                  <span className="w-[256px]">{answer.iterations}</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       ) : (
