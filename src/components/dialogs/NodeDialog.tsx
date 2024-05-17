@@ -29,10 +29,10 @@ type Props = {
 };
 
 const FormSchema = z.object({
-  "lambda-": z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  "lambda+": z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  P_min: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  P_max: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
+  "lambda-": z.string().regex(/^[+\-*/\d.]+$/, "Неправильний формат"),
+  "lambda+": z.string().regex(/^[+\-*/\d.]+$/, "Неправильний формат"),
+  P_min: z.string().regex(/^[+\-*/\d.]+$/, "Неправильний формат"),
+  P_max: z.string().regex(/^[+\-*/\d.]+$/, "Неправильний формат"),
 });
 
 export const NodeDialog: React.FC<Props> = ({
