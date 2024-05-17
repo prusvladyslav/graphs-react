@@ -108,7 +108,6 @@ function App() {
     if (answers && solutionData) return setLoading(false);
     if (!answers && solutionData) return setLoading(true);
   }, [answers, solutionData, setLoading]);
-console.log(answers);
 
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
