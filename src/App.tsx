@@ -64,7 +64,7 @@ function App() {
   ): Promise<Answer | null> => {
     try {
       const C = [solutionData?.c_min, solutionData?.c_max];
-      const initialX = 0.1;
+      const initialX = 0;
       const lambdaK = solutionData?.lambda;
       const epsilon = solutionData?.epsilon;
 
