@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
                   const math = `<$>x^*_{p_{${index}}}</$>`;
                   return (
                     <TableCell key={cell.id}>
-                      <MathTex>{math}</MathTex>
+                      Оптимальний розвʼязок для <MathTex>{math}</MathTex>
                     </TableCell>
                   );
                 })}
