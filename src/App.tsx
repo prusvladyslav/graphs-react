@@ -150,7 +150,7 @@ function App() {
                         className="grid grid-cols-2 items-center gap-4"
                       >
                         <Label htmlFor="solutionMethod">
-                          Оптимальний розвʼязок для <MathTex>{math}</MathTex>
+                          Оптимальний розвʼязок <MathTex>{math}</MathTex>
                         </Label>
                         <span className="w-[256px]">{solution}</span>
                       </div>
