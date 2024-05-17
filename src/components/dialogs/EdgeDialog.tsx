@@ -29,10 +29,10 @@ type Props = {
 };
 
 const FormSchema = z.object({
-  c: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  z: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  r: z.string().regex(/^[f+\-*/\d.]+$/, "Неправильний формат"),
-  alpha: z.string().regex(/^(0\.(?!0+$)\d+)$/, "Неправильний формат"),
+  c: z.string().regex(/^[f+^\-*/\d.]+$/, "Неправильний формат"),
+  z: z.string().regex(/^[f+^\-*/\d.]+$/, "Неправильний формат"),
+  r: z.string().regex(/^[f+^\-*/\d.]+$/, "Неправильний формат"),
+  alpha: z.string().regex(/^0(\.\d+)?|1(\.0+)?$/, "Неправильний формат"),
 });
 
 export const EdgeDialog: React.FC<Props> = ({
