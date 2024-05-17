@@ -86,7 +86,7 @@ export const SolutionForm: React.FC<Props> = ({
         <div className="flex justify-end">
           Натисніть на ребро графа або на вершину класу R, щоб задати параметри.
         </div>
-        <h1 className="text-2xl font-bold">Розвʼязок</h1>
+        <h1 className="text-2xl font-bold">Параметри методу</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 items-center gap-4">
