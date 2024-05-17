@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
                   }
 
                   const index = cellValue.split(" ")[1];
-                  const math = `<$>x^*_{p_${index}}</$>`;
+                  const math = `<$>x^*_{p_{${index}}}</$>`;
                   return (
                     <TableCell key={cell.id}>
                       <MathTex>{math}</MathTex>

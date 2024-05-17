@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Dispatch, SetStateAction } from "react";
-import { SolutionData } from "@/App";
+import { Answer, SolutionData } from "@/App";
 import { cn } from "@/lib/utils";
 import { methodOptions } from "@/const";
 
@@ -54,13 +54,15 @@ const FormSchema = z.object({
   }, z.number({ message: "Неправильний формат" }).min(0, "Число має бути не меншим за 0").max(1, "Число має бути не більшим за 1")),
 });
 
-
-
 type Props = {
   setSolutionData: Dispatch<SetStateAction<SolutionData | null>>;
+  setAnswers: Dispatch<SetStateAction<Answer | null>>;
 };
 
-export const SolutionForm: React.FC<Props> = ({ setSolutionData }) => {
+export const SolutionForm: React.FC<Props> = ({
+  setSolutionData,
+  setAnswers,
+}) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -73,6 +75,7 @@ export const SolutionForm: React.FC<Props> = ({ setSolutionData }) => {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    setAnswers(null);
     setSolutionData(data);
   }
 

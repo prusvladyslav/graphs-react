@@ -42,7 +42,7 @@ export type SolutionData = {
   solutionMethod: string;
 };
 
-type Answer = {
+export type Answer = {
   solutions: string[];
   iterations: string;
   timeTaken: string;
@@ -51,60 +51,62 @@ type Answer = {
 
 function App() {
   const [graphData, setGraphData] = useState<GraphData | null>(null);
-
   const [edgeData, setEdgeData] = useState<EdgeData>({});
-
   const [nodeData, setNodeData] = useState<NodeData>({});
-
   const [solutionData, setSolutionData] = useState<SolutionData | null>(null);
-
   const [answers, setAnswers] = useState<Answer | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const optimizeNetwork = async (
+    solver: Solver,
+    method: string
+  ): Promise<Answer | null> => {
+    try {
+      const C = [solutionData?.c_min, solutionData?.c_max];
+      const initialX = 0.1;
+      const lambdaK = solutionData?.lambda;
+      const epsilon = solutionData?.epsilon;
+
+      if (method === "all") {
+        const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
+        return Object.keys(res).map((key) => {
+          const [solutions, iterations, timeTaken] = res[key];
+          return {
+            solutions,
+            iterations,
+            timeTaken,
+            solutionMethod: key,
+          };
+        });
+      } else {
+        const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
+        const [solutions, iterations, timeTaken] = res;
+        return [{ solutions, iterations, timeTaken, solutionMethod: method }];
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async function optimizeNetwork(solver: any, method: string) {
-      try {
-        const C = [solutionData?.c_min, solutionData?.c_max];
-        const initialX = 0.1;
-        const lambdaK = solutionData?.lambda;
-        const epsilon = solutionData?.epsilon;
-        if (method === "all") {
-          const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
-          return Object.keys(res).map((key) => {
-            const [solutions, iterations, timeTaken] = res[key];
-            return {
-              solutions: solutions,
-              iterations: iterations,
-              timeTaken: timeTaken,
-              solutionMethod: key,
-            };
-          });
-        }
-        const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
-
-        const [solutions, iterations, timeTaken] = res;
-        return { solutions, iterations, timeTaken };
-      } catch (error) {
-        console.error("An error occurred:", error);
-      }
-    }
-
     if (graphData && edgeData && nodeData && solutionData) {
       const solver = new Solver(graphData, edgeData, nodeData);
-      const solutionMethod = solutionData?.solutionMethod;
+      const solutionMethod = solutionData.solutionMethod;
 
-      if (solutionMethod === "all") {
-        optimizeNetwork(solver, solutionMethod).then((res) => setAnswers(res));
-        return;
-      }
-      optimizeNetwork(solver, solutionMethod).then((res) =>
-        setAnswers(
-          res ? [{ ...res, solutionMethod: solutionData.solutionMethod }] : null
-        )
-      );
+      const runOptimization = async () => {
+        const result = await optimizeNetwork(solver, solutionMethod);
+        setAnswers(result);
+      };
+
+      runOptimization();
     }
   }, [graphData, edgeData, nodeData, solutionData]);
-  // console.log();
+
+  useEffect(() => {
+    if (answers && solutionData) return setLoading(false);
+    if (!answers && solutionData) return setLoading(true);
+  }, [answers, solutionData]);
 
   return (
     <main className="flex flex-col items-center space-y-10 py-10">
@@ -118,7 +120,13 @@ function App() {
           setNodeData={setNodeData}
         />
       )}
-      {graphData && <SolutionForm setSolutionData={setSolutionData} />}
+      {graphData && (
+        <SolutionForm
+          setSolutionData={setSolutionData}
+          setAnswers={setAnswers}
+        />
+      )}
+      {graphData && loading && <div>Loading...</div>}
       {answers && answers.length === 1 ? (
         <div className="mx-auto max-w-xl p-6 space-y-6">
           <div className="space-y-10">
@@ -156,7 +164,9 @@ function App() {
           </div>
         </div>
       ) : (
-        answers && <DataTable data={transformArray(answers)} columns={columns} />
+        answers && (
+          <DataTable data={transformArray(answers)} columns={columns} />
+        )
       )}
     </main>
   );
