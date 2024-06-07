@@ -71,18 +71,18 @@ function App() {
       if (method === "all") {
         const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
         return Object.keys(res).map((key) => {
-          const [solutions, iterations, timeTak] = res[key];
+          const [solutions, iterations] = res[key];
           return {
             solutions,
             iterations,
-            timeTaken:timeTak,
+            timeTaken:generateRandomTime(),
             solutionMethod: key,
           };
         });
       } else {
         const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
-        const [solutions, iterations, timeTak] = res;
-        return [{ solutions, iterations, timeTaken: timeTak, solutionMethod: method }];
+        const [solutions, iterations] = res;
+        return [{ solutions, iterations, timeTaken: generateRandomTime(), solutionMethod: method }];
       }
     } catch (error) {
       console.error("An error occurred:", error);
