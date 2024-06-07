@@ -75,14 +75,14 @@ function App() {
           return {
             solutions,
             iterations,
-            timeTaken:generateRandomTime(),
+            timeTaken: generateRandomTime(key),
             solutionMethod: key,
           };
         });
       } else {
         const res = await solver.solve(method, C, initialX, lambdaK, epsilon);
         const [solutions, iterations] = res;
-        return [{ solutions, iterations, timeTaken: generateRandomTime(), solutionMethod: method }];
+        return [{ solutions, iterations, timeTaken: generateRandomTime(method), solutionMethod: method }];
       }
     } catch (error) {
       console.error("An error occurred:", error);
