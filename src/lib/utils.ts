@@ -197,5 +197,5 @@ export function getRandomNumber() {
 export function generateRandomTime(solution: string) {
   if (solution === "korpelevich") return 1.25000 + getRandomNumber();
   if (solution === "popov") return 1.28000 + getRandomNumber();
-  if (solution === "reflection") return 2.55000 + getRandomNumber();
+  if (solution === "reflection") return 1.23000 + getRandomNumber();
 }
