@@ -22,6 +22,6 @@ export const columns: ColumnDef<Data>[] = [
   },
   {
     accessorKey: "reflection",
-    header: "Метод проектування з відбиттям",
+    header: "Метод проєктування з відбиттям",
   },
 ];

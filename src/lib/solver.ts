@@ -218,7 +218,7 @@ export default class Solver {
         math.subtract(x_n, math.multiply(lambda_k, F(...x_n))),
         C
       );
-      if (math.norm(math.subtract(y_n, x_n)) < epsilon) {
+      if (math.subtract(y_n, x_n) < epsilon) {
         break;
       }
       let x_next = this.projectionC(
@@ -307,6 +307,7 @@ export default class Solver {
 
   solve(method, C, initial_x, lambda_k, epsilon = 1e-6, max_iter = 1000) {
     let F = this.F();
+    console.log(F)
     let n = this.nPaths();
     switch (method) {
       case "korpelevich":

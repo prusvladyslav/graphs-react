@@ -117,7 +117,7 @@ export const SolutionForm: React.FC<Props> = ({
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
               <Label htmlFor="c_min">
-                Межа C<sub>min</sub> функції проектування
+                Межа C<sub>min</sub> функції проєктування
               </Label>
               <FormField
                   control={form.control}
@@ -134,7 +134,7 @@ export const SolutionForm: React.FC<Props> = ({
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
               <Label htmlFor="c_max">
-                Межа C<sub>max</sub> функції проектування
+                Межа C<sub>max</sub> функції проєктування
               </Label>
               <FormField
                   control={form.control}
